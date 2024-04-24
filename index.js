@@ -8,5 +8,6 @@ app.get('/', (req, res) => { //req = request (in), res = response (out)
     res.send({hi: 'there'}) // immediately close request, send back response (json data)
 })
 
-// localhost:5000
-app.listen(5000);
+// dynamic port
+const PORT = process.env.PORT || 5000;
+app.listen(PORT);
