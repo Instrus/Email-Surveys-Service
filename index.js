@@ -5,7 +5,7 @@ const app = express();
 
 // route handler - get
 app.get('/', (req, res) => { //req = request (in), res = response (out)
-    res.send({hi: 'there'}) // immediately close request, send back response (json data)
+    res.send({test: 'two'}) // immediately close request, send back response (json data)
 })
 
 // dynamic port
