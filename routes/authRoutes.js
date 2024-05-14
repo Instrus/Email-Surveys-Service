@@ -3,6 +3,7 @@ const passport = require('passport');
 // app object defined in index.js.
 // returns the arrow function upon being required (for initializing route handlers)
 module.exports = (app) => {
+
     // route handler for google authentication
     app.get(
         '/auth/google',
