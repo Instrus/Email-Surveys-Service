@@ -4,6 +4,7 @@ const passport = require('passport');
 // returns the arrow function upon being required (for initializing route handlers)
 module.exports = (app) => {
 
+    
     // route handler for google authentication
     app.get(
         '/auth/google',
