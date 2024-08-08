@@ -1,4 +1,3 @@
-// used for Google Oauth
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const keys = require('../config/keys');
@@ -21,27 +20,24 @@ passport.deserializeUser((id, done)=>{ //user id
 passport.use(
     new GoogleStrategy(
         {
-            clientID: keys.googleClientID, // get client ID
-            clientSecret: keys.googleClientSecret, // get secret
-            callbackURL: '/auth/google/callback', //route user will be sent to after granting permissions to server
+            clientID: keys.googleClientID,
+            clientSecret: keys.googleClientSecret,
+            callbackURL: '/auth/google/callback', //return route after authentication
             proxy: true
         },
-        //callback function (called from /auth/google/callback)
-        (accessToken, refreshToken, profile, done) => {
+        // promises: async and await
+        async (accessToken, refreshToken, profile, done) => { //callback func
             // use mongoose to query database - search if user already exists in 'users'
-            User.findOne({ googleId: profile.id }) // attempt to find first record of - returns a promise
-                .then((existingUser) => {
-                    //if record "existingUser" exists
-                    if (existingUser) { 
-                        // we already have a record with the given profile ID
-                        done(null, existingUser); // no error, record found
-                    } else {
-                        // we don't have a user record with this ID, make a new record
-                        // new model instance (record) and adds record to database 
-                        new User({ googleId: profile.id }).save()
-                            .then(user => done(null, user)) //user is not the same as the User just created. (user is record from database)
-                    }
-                })
+            const existingUser = await User.findOne({ googleId: profile.id }) //attempt to find record
+
+            if (existingUser)
+                // record found, return
+                return done(null, existingUser);
+                
+            // else new model instance (record) - adds record to database 
+            const user = await new User({ googleId: profile.id }).save()
+            done(null, user);
         }
     )
 );
+

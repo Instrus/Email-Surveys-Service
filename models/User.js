@@ -1,10 +1,11 @@
 // file needs to be required before any other files interacting with database
 const mongoose = require('mongoose');
-const { Schema } = mongoose; //same as const Schema = mongoose.Schema
+const { Schema } = mongoose;
 
-// create new Schema
+// new Schema
 const userSchema = new Schema({
-    googleId: String
+    googleId: String,
+    credits: { type: Number, default: 0 }
 });
 
 // (model class) create new collection named users using the userSchema defined earlier

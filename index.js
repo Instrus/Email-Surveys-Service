@@ -1,8 +1,8 @@
-// imports
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
+const bodyParser = require('body-parser');
 const keys = require('./config/keys');
 
 // connect to mongodb database (Atlas)
@@ -12,9 +12,11 @@ mongoose.connect(keys.mongoURI);
 require('./models/User') // load before passport
 require('./services/passport'); // load after User
 
-// generates an express application
+// generate express application
 const app = express();
 
+// middleware
+app.use(bodyParser.json());
 app.use(
     cookieSession({
         maxAge: 30 * 24 * 60 * 60 * 1000, //how long the cookie can exist in the browser before expired (30 days)
@@ -24,9 +26,22 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// calls the arrow function from authRoutes.js. (app) is the argument being passed
-// (app) argument runs returned function (module.exports) from authRoutes.js
+// adding routes to app
 require('./routes/authRoutes')(app);
+require('./routes/billingRoutes')(app);
+
+// production environment routes
+if (process.env.NODE_ENV === 'production'){
+
+    // Express will serve production assets (main.js or main.css)
+    app.use(express.static('client/build'));
+    // Note order of operations. If no specific file or route requested,
+    // Express will serve up the index.html file if route is not recognized
+    const path = require('path');
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(_dirname, 'client', 'build', 'index.html'));
+    });
+}
 
 // dynamic port
 const PORT = process.env.PORT || 5000;

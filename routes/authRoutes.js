@@ -3,7 +3,6 @@ const passport = require('passport');
 // app object defined in index.js.
 // returns the arrow function upon being required (for initializing route handlers)
 module.exports = (app) => {
-
     
     // route handler for google authentication
     app.get(
@@ -14,12 +13,20 @@ module.exports = (app) => {
     );
 
     // route handler for google callback, GoogleStrategy is now holding code
-    app.get('/auth/google/callback', passport.authenticate('google'));
+    app.get('/auth/google/callback',
+    // verifies user is authenticated/logged in, then req.user is populated with users info
+     passport.authenticate('google'),
+     // redirects user to /surveys after google authentication
+     (req, res) => {
+        res.redirect('/surveys');
+     }
+    );
 
     // route handler for logging out
     app.get('/api/logout', (req, res) => {
         req.logout();
-        res.send(req.user); //feedback
+        // redirects user to front page after logout
+        res.redirect('/');
     })
 
     // route handler for seeing current user logged in
