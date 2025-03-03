@@ -29,7 +29,7 @@ class Header extends Component {
         return (
             <nav>
                 <div className = "nav-wrapper" style={{ margin: '0 10px' }}>
-                    <Link to={this.props.auth ? '/surveys' : '/'} className = "left brand logo">
+                    <Link to={this.props.auth ? '/surveys' : '/'} className = "left brand logo" style={{fontSize: '20px'}}>
                         Email-Survey-Service
                     </Link>
                     <ul className= "right">

@@ -10,6 +10,7 @@ mongoose.connect(keys.mongoURI);
 
 // file requirements - note order of operations
 require('./models/User') // load before passport
+require('./models/Survey');
 require('./services/passport'); // load after User
 
 // generate express application
@@ -29,6 +30,7 @@ app.use(passport.session());
 // adding routes to app
 require('./routes/authRoutes')(app);
 require('./routes/billingRoutes')(app);
+require('./routes/surveyRoutes')(app);
 
 // production environment routes
 if (process.env.NODE_ENV === 'production') {

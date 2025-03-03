@@ -6,8 +6,8 @@ import * as actions from '../actions'; // import all action creators
 import Header from './Header';
 import Landing from './Landing';
 
-const Dashboard = () => <h2>Dashboard</h2>
-const SurveyNew = () => <h2>SurveyNew</h2>
+import Dashboard from './Dashboard';
+import SurveyNew from './surveys/SurveyNew';
 
 // class based component
 class App extends Component {
@@ -21,16 +21,14 @@ class App extends Component {
 
     render(){
         return (
-            <div className = "container">
-                <BrowserRouter>
-                <div>
-                    <Header />
-                    <Route exact = {true} path = "/" component = {Landing} />
-                    <Route exact = {true} path = "/surveys" component = {Dashboard} />
-                    <Route path = "/surveys/new" component = {SurveyNew} />
-                </div>
-                </BrowserRouter>
+        <BrowserRouter>
+            <div className="container">
+                <Header />
+                <Route exact = {true} path = "/" component = {Landing} />
+                <Route exact = {true} path = "/surveys" component = {Dashboard} />
+                <Route path = "/surveys/new" component = {SurveyNew} />
             </div>
+        </BrowserRouter>
         )
     }
 }

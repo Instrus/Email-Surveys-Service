@@ -13,6 +13,11 @@ import { createStore, applyMiddleware } from 'redux';
 import App from './components/App';
 import reducers from './reducers';
 import {thunk} from 'redux-thunk';
+
+// development only axios testing
+import axios from 'axios';
+window.axios = axios;
+
 // store - for managing state
 const store = createStore(reducers, {}, applyMiddleware(thunk));
 
